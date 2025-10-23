@@ -349,26 +349,33 @@ function handleNextMonth() {
 }
 
 // Handle calendar toggle
-function handleDateChange() {
-    selectedDay = parseInt(daySelect.value);
-    selectedMonth = parseInt(monthSelect.value);
-    selectedYear = parseInt(yearSelect.value);
-    
+function handleCalendarToggle() {
     if (selectedDay && selectedMonth && selectedYear) {
-        // Update day dropdown based on selected month/year
-        updateDayDropdown();
-        
-        // Validate selected day
-        const maxDays = getDaysInMonth(selectedYear, selectedMonth);
-        if (selectedDay > maxDays) {
-            selectedDay = maxDays;
-            daySelect.value = selectedDay;
+        let convertedDate;
+        if (isGregorian) {
+            // Switching to EC, convert GC to EC
+            convertedDate = convertGCtoEC(selectedDay, selectedMonth, selectedYear);
+        } else {
+            // Switching to GC, convert EC to GC
+            convertedDate = convertECtoGC(selectedDay, selectedMonth, selectedYear);
         }
-        
+        if (convertedDate) {
+            selectedDay = convertedDate.day;
+            selectedMonth = convertedDate.month;
+            selectedYear = convertedDate.year;
+        }
+    }
+    isGregorian = !languageToggle.checked;
+    calendarPreferenceInput.value = isGregorian ? 'gregorian' : 'ethiopian';
+
+    populateDateSelects(isGregorian);
+    setToday();
+
+    if (selectedMonth && selectedYear) {
         currentViewMonth = selectedMonth;
         currentViewYear = selectedYear;
-        generateCalendar();
     }
+    generateCalendar();
     updateDateDisplay();
 }
 
@@ -464,20 +471,17 @@ function updateDateDisplay() {
             convertedDate = convertGCtoEC(selectedDay, selectedMonth, selectedYear);
 
             if (convertedDate) {
-                // Handle Pagume month name
-                const monthName = ethiopianMonths[convertedDate.month - 1];
-                const ecDate = `${convertedDate.day} ${monthName} ${convertedDate.year}`;
+                const ecDate = `${convertedDate.day} ${ethiopianMonths[convertedDate.month - 1]} ${convertedDate.year}`;
                 displayText = gcDate;
                 infoText = `Ethiopian: ${ecDate}`;
 
+                // Store both dates
                 selectedDateGCInput.value = gcDate;
                 selectedDateECInput.value = ecDate;
             }
         } else {
             // Display Ethiopian date and convert to Gregorian
-            // Handle Pagume month name specifically
-            const monthName = ethiopianMonths[selectedMonth - 1];
-            const ecDate = `${selectedDay} ${monthName} ${selectedYear}`;
+            const ecDate = `${selectedDay} ${ethiopianMonths[selectedMonth - 1]} ${selectedYear}`;
             convertedDate = convertECtoGC(selectedDay, selectedMonth, selectedYear);
 
             if (convertedDate) {
@@ -485,6 +489,7 @@ function updateDateDisplay() {
                 displayText = ecDate;
                 infoText = `Gregorian: ${gcDate}`;
 
+                // Store both dates
                 selectedDateGCInput.value = gcDate;
                 selectedDateECInput.value = ecDate;
             }
@@ -493,6 +498,7 @@ function updateDateDisplay() {
         dateDisplay.textContent = displayText;
         calendarInfo.textContent = infoText;
 
+        // Store date in ISO format for SurveyCTO
         const isoDate = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${selectedDay.toString().padStart(2, '0')}`;
         selectedDateInput.value = isoDate;
     } else {
