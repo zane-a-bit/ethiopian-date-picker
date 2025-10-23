@@ -1,0 +1,278 @@
+/* SurveyCTO Plugin Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    background-color: #f5f5f5;
+}
+
+.plugin-container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.language-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.toggle-label {
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.toggle-label.english {
+    color: #0066cc;
+}
+
+.toggle-label.amharic {
+    color: #cc0000;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #0066cc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #cc0000;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.date-section{
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+    margin-bottom:12px;
+    min-height:140px; /* provide vertical space so the display can be positioned lower */
+}
+
+.inputs-section {
+    width: 180px;
+    min-width: 140px;
+    background-color: #fff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+}
+
+/* keep the display panel pinned to the bottom of the date-section */
+.display-section{
+    align-self:flex-end;
+    flex: 1 1 360px;
+    min-width: 220px;
+}
+
+/* stack month/year/day like native picker */
+.date-inputs {
+    display: flex;
+    flex-direction: row;    /* side-by-side */
+    gap: 8px;
+    align-items: center;
+}
+
+.date-inputs select {
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px 6px;
+    background: transparent;
+    font-size: 18px;
+    color: #222;
+    height: 48px;
+    text-align: left;
+    outline: none;
+    transition: border-color .18s, color .18s;
+    min-width: 64px;
+    flex: 0 0 auto;
+}
+.date-inputs select:focus,
+.date-inputs select:not([value=""]) {
+    border-bottom-color: #2a86f6;
+}
+/* sensible fixed widths so they line up nicely */
+.date-inputs select#daySelect { width: 56px; }
+.date-inputs select#monthSelect { width: 120px; }
+.date-inputs select#yearSelect { width: 88px; }
+
+/* revert to stacked layout on very small screens */
+@media (max-width: 480px) {
+    .date-inputs {
+        flex-direction: column;
+        gap: 6px;
+    }
+    .date-inputs select {
+        width: 100%;
+    }
+}
+
+/* calendar area on the right */
+.calendar-wrapper {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    padding: 12px;
+}
+.display-section .calendar-wrapper { margin-left: 8px; }
+
+.date-display {
+    text-align: left;
+    font-weight: 700;
+    min-height: 20px;
+    margin-bottom: 6px;
+    font-size: 16px;
+    color: #222;
+}
+
+.amharic-date { font-family: Arial, sans-serif; }
+
+.calendar-info {
+    font-size: 12px;
+    color: #666;
+    text-align: left;
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 6px 0;
+}
+
+.calendar-nav button {
+    background: none;
+    color: #2a86f6;
+    border: none;
+    padding: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.calendar-nav button:hover { opacity: 0.9; }
+
+.calendar-grid {
+    overflow: visible;
+}
+
+.calendar-grid table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar-grid th,
+.calendar-grid td {
+    text-align: center;
+    padding: 10px 8px;
+    border: none;
+    font-size: 14px;
+    width: 36px;
+    height: 36px;
+}
+
+.calendar-grid th {
+    background: transparent;
+    color: #666;
+    font-weight: 700;
+    font-size: 12px;
+    padding-bottom: 8px;
+}
+
+.calendar-grid td {
+    cursor: pointer;
+    transition: background-color 0.18s, color 0.18s;
+    border-radius: 6px;
+}
+
+.calendar-grid td:hover {
+    background-color: #f2f8ff;
+}
+
+/* selected day style similar to native: filled rounded rectangle */
+.calendar-grid td.selected {
+    background-color: #2a86f6;
+    color: white;
+    box-shadow: inset 0 -6px 0 rgba(42,134,246,0.15);
+}
+
+.calendar-grid td.other-month {
+    color: #bfc6cc;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.calendar-grid td.other-month:hover {
+    background-color: #fafafa;
+}
+
+/* Hidden inputs for SurveyCTO data storage */
+.hidden-input {
+    display: none;
+}
+
+/* Responsive: stack display under inputs on small screens */
+ @media (max-width: 640px) {
+     .date-section {
+         flex-direction: column;
+         gap: 8px;
+     }
+     .inputs-section,
+     .display-section {
+         flex: none;
+         width: 100%;
+         min-width: 0;
+     }
+     .inputs-section { order: 1; }
+     .display-section { order: 2; }
+     .date-display {
+         font-size: 16px;
+         padding-top: 8px;
+         padding-bottom: 8px;
+     }
+ }

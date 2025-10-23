@@ -1,0 +1,8 @@
+{
+    "name": "Ethiopian Date Picker",
+    "author": "Dagem Feleke",
+    "version": "1.0.0",
+    "supportedFieldTypes": ["text"],
+    "hideDefaultRequiredMessage": false,
+    "hideDefaultConstraintMessage": false
+}
