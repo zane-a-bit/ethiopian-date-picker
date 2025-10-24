@@ -15,7 +15,7 @@ A high-quality field plug-in for SurveyCTO that provides an intuitive date picke
 ## Installation
 
 1. Download the plug-in files:
-   - `template.html`
+   - `index.html`
    - `style.css`
    - `script.js`
    - `manifest.json`
